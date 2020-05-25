@@ -1,0 +1,14 @@
+
+*.vcxproj
+
+QTLab3/Debug/qmake/
+
+QTLab3/Release/qmake/
+
+.vs/QTLab3/v16/
+
+QTLab3.sln
+
+QTLab3/QTLab3.vcxproj.filters
+
+QTLab3/QTLab3.vcxproj.user
