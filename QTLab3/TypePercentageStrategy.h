@@ -10,7 +10,7 @@ public:
     explicit TypePercentageStrategy();
     ~TypePercentageStrategy();
 
-    void process(QString const& path) override;
+    void DoAndPrint(QString const& path) override;
 
 private:
     QHash<QString, double> types_list;

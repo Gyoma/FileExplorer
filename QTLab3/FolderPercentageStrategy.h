@@ -8,6 +8,6 @@ public:
     explicit FolderPercentageStrategy();
     ~FolderPercentageStrategy();
 
-    void process(QString const& path) override;
+    void DoAndPrint(QString const& path) override;
 };
 

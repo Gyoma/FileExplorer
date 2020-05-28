@@ -22,6 +22,6 @@ public:
 
     uint64_t getTotalSize(QString const& path, QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden);
 
-    virtual void process(QString const& path) = 0;
+    virtual void DoAndPrint(QString const& path) = 0;
 };
 

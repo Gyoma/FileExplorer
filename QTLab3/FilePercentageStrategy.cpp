@@ -13,13 +13,16 @@ uint64_t FilePercentageStrategy::getTotalSize(QString const& path, QDir::Filters
 
     if (path_inf.isDir())
     {
+        if (QDir(path).isEmpty())
+            return 0;
+
         uint64_t res = 0;
 
         std::function<uint64_t(QString const&)> process_files = [&](QString const& path)
         {
             for (auto& entity : QDir(path).entryInfoList(filters))
                 if (entity.isDir())
-                    process_files(entity.absoluteFilePath());
+                    process_files(entity.filePath());
                 else
                     res += entity.size();
 

@@ -8,36 +8,49 @@ TypePercentageStrategy::TypePercentageStrategy()
 TypePercentageStrategy::~TypePercentageStrategy()
 {}
 
-void TypePercentageStrategy::process(QString const& path)
+void TypePercentageStrategy::DoAndPrint(QString const& path)
 {
-    QFileInfo file_inf(path);
+    QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden;
+    QFileInfo inf(path);
+    uint64_t total_size = 0;
 
-    if (file_inf.isDir())
+    std::function<void(QString const&, QString)> process_files = [&](QString const& path, QString const& type)
     {
-
-        QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden;
-        uint64_t total_size = getTotalSize(path, filters);
-
-        std::function<void(QString const&)> process_files = [&](QString const& path)
-        {
-            for (auto& entity : QDir(path).entryInfoList(filters))
-                if (entity.isDir())
-                    process_files(entity.absoluteFilePath());
-                else
+        for (auto& entity : QDir(path).entryInfoList(filters))
+            if (entity.isDir())
+                process_files(entity.filePath(), type);
+            else
+            {
+                if (type == "")
                     types_list[entity.suffix()] += entity.size();
-        };
+                else
+                    if (type == entity.suffix())
+                        types_list[entity.suffix()] += entity.size();
+            }
+    };
 
-        process_files(path);
+    if (inf.isDir())
+    {
+        total_size = getTotalSize(path, filters);
 
-        QHashIterator<QString, double> it(types_list);
-
-        while (it.hasNext())
+        if (total_size == 0)
         {
-            it.next();
-            qcout << "." + it.key() << " = " << double(it.value()) / total_size * 100 << "%" << endl;
+            qcout << inf.filePath() << " is empty" << endl;
+            return;
         }
 
+        process_files(path, "");
     }
     else
-        qcout << file_inf.suffix() << "  = 100%" << endl;
+    {
+        total_size = getTotalSize(inf.dir().path(), filters);
+        process_files(inf.dir().path(), inf.suffix());
+    }
+
+    QHashIterator<QString, double> it(types_list);
+    while (it.hasNext())
+    {
+        it.next();
+        qcout << "*." + it.key() << " = " << double(it.value()) / total_size * 100 << " %" << endl;
+    }
 }

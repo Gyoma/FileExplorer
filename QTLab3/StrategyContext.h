@@ -8,7 +8,7 @@ public:
     explicit StrategyContext(FilePercentageStrategy* Strategy = nullptr);
     
     void setStrategy(FilePercentageStrategy* Strategy);
-    void process(QString const& path);
+    void DoAndPrint(QString const& path);
 
     ~StrategyContext();
 
