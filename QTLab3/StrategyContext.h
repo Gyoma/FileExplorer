@@ -1,7 +1,7 @@
 #pragma once
 #include "FilePercentageStrategy.h"
 
-//Контекст, где хранятся указатели на стратегии
+//РљРѕРЅС‚РµРєСЃС‚, РіРґРµ С…СЂР°РЅВ¤С‚СЃВ¤ СѓРєР°Р·Р°С‚РµР»Рё РЅР° СЃС‚СЂР°С‚РµРіРёРё
 class StrategyContext
 {
 public:
