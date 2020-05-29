@@ -13,6 +13,8 @@ public:
     void DoAndPrint(QString const& path) override;
 
 private:
-    QHash<QString, double> types_list;
+
+    //Хэш-таблица типов файлов, значением выступаем общий размер файлов с таким типов в папке
+    QHash<QString, uint64_t> types_list;
 };
 
