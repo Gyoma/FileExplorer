@@ -12,6 +12,8 @@ FileExplorer::FileExplorer(QWidget *parent, FileExplorer::StrategyType strat_typ
 	file_sistem->setRootPath(QDir::homePath());
 	ui->treeView->setModel(file_sistem);
 	ui->treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	ui->tableView->setModel(table_model);
+
 
 	if (strat_type == StrategyType::byFolder)
 		strat_context.setStrategy(new FolderPercentageStrategy);
@@ -19,13 +21,14 @@ FileExplorer::FileExplorer(QWidget *parent, FileExplorer::StrategyType strat_typ
 		strat_context.setStrategy(new TypePercentageStrategy);
 
 	connect(ui->Strategy_cbox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FileExplorer::setGroupingStrategy);
-	connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &FileExplorer::strategyChanged);
+	connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &FileExplorer::folderChanged);
 }
 
-void FileExplorer::strategyChanged(const QItemSelection& selected, const QItemSelection& deselected)
+void FileExplorer::folderChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
 	currentPath = file_sistem->filePath(selected.indexes()[0]);
-	ui->tableView->setModel(new FileExplorerTableModel(this, strat_context.DoAndPrint(currentPath)));
+	table_model->setFilesSize(strat_context.DoAndPrint(currentPath));
+	emit table_model->layoutChanged();
 }
 
 void FileExplorer::setGroupingStrategy(qint32 const& index)
@@ -43,5 +46,6 @@ void FileExplorer::setGroupingStrategy(qint32 const& index)
 	if (currentPath.isEmpty())
 		return;
 
-	ui->tableView->setModel(new FileExplorerTableModel(this, strat_context.DoAndPrint(currentPath)));
+	table_model->setFilesSize(strat_context.DoAndPrint(currentPath));
+	emit table_model->layoutChanged();
 }

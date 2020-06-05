@@ -25,7 +25,7 @@ public:
 
 public slots:
     void setGroupingStrategy(qint32 const& index);
-    void strategyChanged(const QItemSelection& selected, const QItemSelection& deselected);
+    void folderChanged(const QItemSelection& selected, const QItemSelection& deselected);
 
 private:
 
