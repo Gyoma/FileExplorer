@@ -13,7 +13,7 @@ void FileExplorerTableModel::setFilesSize(QVector<QPair<QString, uint64_t>> cons
 
 int FileExplorerTableModel::rowCount(const QModelIndex&) const
 {
-    return files_size.size() - 1;
+    return (files_size.size() > 1 ? files_size.size() - 1 : files_size.size());
 }
 
 int FileExplorerTableModel::columnCount(const QModelIndex&) const
@@ -27,12 +27,12 @@ QVariant FileExplorerTableModel::headerData(int section, Qt::Orientation orienta
     {
         switch (section)
         {
-        case 0: 
+        case 0:
             return QString("File Name");
-        case 1: 
+        case 1:
             return QString("Size");
-        case 2: 
-            return QString("Percentage");
+        case 2:
+            return QString("%");
         }
     }
 
@@ -48,10 +48,18 @@ QVariant FileExplorerTableModel::data(const QModelIndex& index, int role) const
         case 0:
             return QString(files_size[index.row()].first);
         case 1:
-            return QLocale(QLocale::English).formattedDataSize(files_size[index.row()].second);
+
+            if (files_size[index.row()].second > 0)
+                return QLocale(QLocale::English).formattedDataSize(files_size[index.row()].second);
+            else
+                return QString("empty");
         case 2:
             double percent = double(files_size[index.row()].second) / files_size[files_size.size() - 1].second * 100;
-            return (percent >= 1 ? QString::number(percent) : "< 1") + " %";
+            
+            if (files_size[index.row()].second > 0)
+                return (percent >= 1 ? QString::number(percent) : "< 1");
+            else
+                return QString("0");
         }
     }
 

@@ -23,7 +23,10 @@ QVector<QPair<QString, uint64_t>> FolderPercentageStrategy::DoAndPrint(QString c
         total_size = getTotalSize(path, filters);
 
         if (total_size == 0)
+        {
+            res.append({ inf.fileName(), 0 });
             return res;
+        }
 
         //рекурсивная функция для подсчета процентного соотношения файлов в папке верхнего уровня, начиная с path
         auto process_files = [&](QString const& path)
@@ -40,7 +43,7 @@ QVector<QPair<QString, uint64_t>> FolderPercentageStrategy::DoAndPrint(QString c
     else //если изначально не папка
     {
         total_size = getTotalSize(inf.dir().path());
-        res.append({ inf.fileName(), total_size});
+        res.append({ inf.fileName(), total_size });
     }
 
     res.append({ "Total size", total_size });

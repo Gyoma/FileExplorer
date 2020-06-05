@@ -41,7 +41,10 @@ QVector<QPair<QString, uint64_t>> TypePercentageStrategy::DoAndPrint(QString con
 
         //если папка пустая
         if (total_size == 0)
+        {
+            res.append({ inf.fileName(), 0 });
             return res;
+        }
 
         //обрабытваем все типы, начиная с path
         process_files(path, "");
