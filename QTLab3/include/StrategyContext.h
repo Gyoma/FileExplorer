@@ -9,7 +9,7 @@ public:
     explicit StrategyContext(FilePercentageStrategy* Strategy = nullptr);
     
     void setStrategy(FilePercentageStrategy* Strategy);
-    void DoAndPrint(QString const& path);
+    QVector<QPair<QString, uint64_t>> DoAndPrint(QString const& path);
 
     ~StrategyContext();
 

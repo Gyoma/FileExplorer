@@ -1,5 +1,7 @@
-#include "TypePercentageStrategy.h"
+#include <include/TypePercentageStrategy.h>
 #include <functional>
+#include <QFileInfo>
+#include <QDir>
 
 
 TypePercentageStrategy::TypePercentageStrategy()
@@ -8,12 +10,13 @@ TypePercentageStrategy::TypePercentageStrategy()
 TypePercentageStrategy::~TypePercentageStrategy()
 {}
 
-void TypePercentageStrategy::DoAndPrint(QString const& path)
+QVector<QPair<QString, uint64_t>> TypePercentageStrategy::DoAndPrint(QString const& path)
 {
     //настраиваем фильтр на скрытые файлы и папки
     QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden;
     QFileInfo inf(path);
     uint64_t total_size = 0;
+    QVector<QPair<QString, uint64_t>> res;
 
     //рекурсивная функция для подсчета размеров файлов определенного типа
     //параметры:  path - путь до сущности, type - тип, для которого подсчитывать размер ("" - подсчитывать все типы)
@@ -38,10 +41,7 @@ void TypePercentageStrategy::DoAndPrint(QString const& path)
 
         //если папка пустая
         if (total_size == 0)
-        {
-            qcout << inf.filePath() << " is empty" << endl;
-            return;
-        }
+            return res;
 
         //обрабытваем все типы, начиная с path
         process_files(path, "");
@@ -55,9 +55,15 @@ void TypePercentageStrategy::DoAndPrint(QString const& path)
 
     //проходим по списку типов и выписываем их процентное соотношение
     QHashIterator<QString, uint64_t> it(types_list);
-    while (it.hasNext())
+    res.resize(types_list.size());
+
+    for (size_t i = 0; it.hasNext(); ++i)
     {
         it.next();
-        qcout << "*." + it.key() << " = " << double(it.value()) / total_size * 100 << " %" << endl;
+        res[i] = { '.' + it.key(), it.value() };
     }
+
+    res.append({ "Total size", total_size });
+
+    return res;
 }

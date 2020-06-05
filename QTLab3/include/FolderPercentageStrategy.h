@@ -8,6 +8,6 @@ public:
     explicit FolderPercentageStrategy();
     ~FolderPercentageStrategy();
 
-    void DoAndPrint(QString const& path) override;
+    QVector<QPair<QString, uint64_t>> DoAndPrint(QString const& path) override;
 };
 

@@ -1,5 +1,7 @@
-#include "FolderPercentageStrategy.h"
+#include <include/FolderPercentageStrategy.h>
 #include <functional>
+#include <QFileInfo>
+#include <QDir>
 
 FolderPercentageStrategy::FolderPercentageStrategy()
 {}
@@ -7,46 +9,40 @@ FolderPercentageStrategy::FolderPercentageStrategy()
 FolderPercentageStrategy::~FolderPercentageStrategy()
 {}
 
-void FolderPercentageStrategy::DoAndPrint(QString const& path)
+QVector<QPair<QString, uint64_t>> FolderPercentageStrategy::DoAndPrint(QString const& path)
 {
     //настраиваем фильтр на скрытые файлы и папки
     QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden;
-    uint64_t total_size = getTotalSize(path, filters);
+    QVector<QPair<QString, uint64_t>> res;
+    uint64_t total_size = 0;
 
     QFileInfo inf(path);
-
     //если папка
     if (inf.isDir())
     {
-        //если папка пустая
+        total_size = getTotalSize(path, filters);
+
         if (total_size == 0)
-        {
-            qcout << inf.filePath() << " is empty" << endl;
-            return;
-        }
+            return res;
 
         //рекурсивная функция для подсчета процентного соотношения файлов в папке верхнего уровня, начиная с path
         auto process_files = [&](QString const& path)
         {
             for (auto& entity : QDir(path).entryInfoList(filters))
                 if (entity.isDir()) //если папка
-                {
-                    uint64_t size = getTotalSize(entity.filePath()); //получаем размер папки
-                    qcout << entity.fileName() << " = " << double(size) / total_size * 100 << " %";
-
-                    if (size == 0) //если папка пустая, то печатаем эту информацию
-                        qcout << " (empty)";
-                    qcout << endl;
-                }
+                    //получаем размер папки
+                    res.append({ entity.fileName(), getTotalSize(entity.filePath()) });
                 else //есои файл
-                    qcout << entity.fileName() << " = " << double(entity.size()) / total_size * 100 << " %" << endl;
+                    res.append({ entity.fileName(), (uint64_t)entity.size() });
         };
-
         process_files(path);
     }
     else //если изначально не папка
     {
         total_size = getTotalSize(inf.dir().path());
-        qcout << inf.fileName() << " = " << double(inf.size()) / total_size * 100 << " %" << endl;
+        res.append({ inf.fileName(), total_size});
     }
+
+    res.append({ "Total size", total_size });
+    return res;
 }
