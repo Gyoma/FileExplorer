@@ -1,5 +1,7 @@
-#include "FilePercentageStrategy.h"
+#include <include/FilePercentageStrategy.h>
 #include <functional>
+#include <QFileInfo>
+#include <QDir>
 
 FilePercentageStrategy::FilePercentageStrategy()
 {}

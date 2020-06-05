@@ -1,5 +1,5 @@
 #pragma once
-#include "FilePercentageStrategy.h"
+#include <include/FilePercentageStrategy.h>
 #include <QHash>
 
 
@@ -10,7 +10,7 @@ public:
     explicit TypePercentageStrategy();
     ~TypePercentageStrategy();
 
-    void DoAndPrint(QString const& path) override;
+    QVector<QPair<QString, uint64_t>> DoAndPrint(QString const& path) override;
 
 private:
 
