@@ -1,9 +1,8 @@
 #pragma once
 #include <QString>
-#include <QList>
-#include <QFileInfo>
-#include <QDir>
+#include <QVector>
 #include <QTextStream>
+#include <QDir>
 
 //аналог потоку вывода std::cout для вывода объектов классов qt
 static QTextStream qcout(stdout);
@@ -29,6 +28,6 @@ public:
 
     uint64_t getTotalSize(QString const& path, QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden) const;
 
-    virtual void DoAndPrint(QString const& path) = 0;
+    virtual QVector<QPair<QString, uint64_t>> DoAndPrint(QString const& path) = 0;
 };
 

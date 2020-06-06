@@ -1,4 +1,4 @@
-#include "StrategyContext.h"
+#include <include/StrategyContext.h>
 
 StrategyContext::StrategyContext(FilePercentageStrategy* Strategy) :
     strategy(Strategy)
@@ -10,10 +10,12 @@ void StrategyContext::setStrategy(FilePercentageStrategy* Strategy)
     strategy = Strategy;
 }
 
-void StrategyContext::DoAndPrint(QString const& path)
+QVector<QPair<QString, uint64_t>> StrategyContext::DoAndPrint(QString const& path)
 {
     if (strategy)
-        strategy->DoAndPrint(path);
+        return strategy->DoAndPrint(path);
+
+    return QVector<QPair<QString, uint64_t>>();
 }
 
 StrategyContext::~StrategyContext()
