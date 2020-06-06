@@ -43,7 +43,7 @@ QVector<QPair<QString, uint64_t>> FolderPercentageStrategy::DoAndPrint(QString c
     else //если изначально не папка
     {
         total_size = getTotalSize(inf.dir().path());
-        res.append({ inf.fileName(), total_size });
+        res.append({ inf.fileName(), (uint64_t)inf.size() });
     }
 
     res.append({ "Total size", total_size });

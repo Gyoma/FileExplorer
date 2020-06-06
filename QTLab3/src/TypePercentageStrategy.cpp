@@ -12,6 +12,8 @@ TypePercentageStrategy::~TypePercentageStrategy()
 
 QVector<QPair<QString, uint64_t>> TypePercentageStrategy::DoAndPrint(QString const& path)
 {
+    //Хэш-таблица типов файлов, значением выступаем общий размер файлов с таким типов в папке
+    QHash<QString, uint64_t> types_list;
     //настраиваем фильтр на скрытые файлы и папки
     QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden;
     QFileInfo inf(path);
@@ -63,7 +65,10 @@ QVector<QPair<QString, uint64_t>> TypePercentageStrategy::DoAndPrint(QString con
     for (size_t i = 0; it.hasNext(); ++i)
     {
         it.next();
-        res[i] = { '.' + it.key(), it.value() };
+        if (it.key().isEmpty())
+            res[i] = { "without type", it.value() };
+        else
+            res[i] = { '.' + it.key(), it.value() };
     }
 
     res.append({ "Total size", total_size });

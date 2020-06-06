@@ -28,7 +28,7 @@ QVariant FileExplorerTableModel::headerData(int section, Qt::Orientation orienta
         switch (section)
         {
         case 0:
-            return QString("File Name");
+            return QString("Name");
         case 1:
             return QString("Size");
         case 2:
@@ -59,7 +59,7 @@ QVariant FileExplorerTableModel::data(const QModelIndex& index, int role) const
             if (files_size[index.row()].second > 0)
                 return (percent >= 1 ? QString::number(percent) : "< 1");
             else
-                return QString("0");
+                return QString();
         }
     }
 
