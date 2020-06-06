@@ -18,6 +18,7 @@ QVector<QPair<QString, uint64_t>> TypePercentageStrategy::DoAndPrint(QString con
     QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden;
     QFileInfo inf(path);
     uint64_t total_size = 0;
+    //данные файлов (название файла и размер этого файла)
     QVector<QPair<QString, uint64_t>> res;
 
     //рекурсивная функция для подсчета размеров файлов определенного типа
@@ -65,13 +66,14 @@ QVector<QPair<QString, uint64_t>> TypePercentageStrategy::DoAndPrint(QString con
     for (size_t i = 0; it.hasNext(); ++i)
     {
         it.next();
+        //если нет расширения у файла
         if (it.key().isEmpty())
             res[i] = { "without type", it.value() };
         else
             res[i] = { '.' + it.key(), it.value() };
     }
 
+    //добавляем в конец общий размер все папки
     res.append({ "Total size", total_size });
-
     return res;
 }
