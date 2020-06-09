@@ -13,6 +13,7 @@ QVector<QPair<QString, uint64_t>> FolderPercentageStrategy::DoAndPrint(QString c
 {
     //настраиваем фильтр на скрытые файлы и папки
     QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden;
+    //данные файлов (название файла и размер этого файла)
     QVector<QPair<QString, uint64_t>> res;
     uint64_t total_size = 0;
 
@@ -46,6 +47,7 @@ QVector<QPair<QString, uint64_t>> FolderPercentageStrategy::DoAndPrint(QString c
         res.append({ inf.fileName(), (uint64_t)inf.size() });
     }
 
+    //добавляем в конец общий размер все папки
     res.append({ "Total size", total_size });
     return res;
 }

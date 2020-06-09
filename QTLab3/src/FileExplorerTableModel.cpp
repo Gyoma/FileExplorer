@@ -6,6 +6,7 @@ FileExplorerTableModel::FileExplorerTableModel(QObject* parent, QVector<QPair<QS
     files_size(Files_size)
 {}
 
+//обновление данных модели
 void FileExplorerTableModel::setFilesSize(QVector<QPair<QString, uint64_t>> const& Files_size)
 {
     files_size = Files_size;
@@ -13,6 +14,8 @@ void FileExplorerTableModel::setFilesSize(QVector<QPair<QString, uint64_t>> cons
 
 int FileExplorerTableModel::rowCount(const QModelIndex&) const
 {
+    //Если в папке были файлы, то в конец files_size всегда пишется общий размер папка
+    //Если файлов и вложенных папок в выбранной папки не было, тогда в files_size не пишется итоговый размер папки
     return (files_size.size() > 1 ? files_size.size() - 1 : files_size.size());
 }
 
@@ -27,10 +30,13 @@ QVariant FileExplorerTableModel::headerData(int section, Qt::Orientation orienta
     {
         switch (section)
         {
+            //если нужно название первой колонки
         case 0:
             return QString("Name");
+            //если нужно название второй колонки
         case 1:
             return QString("Size");
+            //если нужно название третьей колонки
         case 2:
             return QString("%");
         }
@@ -41,21 +47,27 @@ QVariant FileExplorerTableModel::headerData(int section, Qt::Orientation orienta
 
 QVariant FileExplorerTableModel::data(const QModelIndex& index, int role) const
 {
+    //проверка на корректность данных, по которым производится запрос
     if (role == Qt::DisplayRole && index.isValid() && index.row() <= files_size.size())
     {
         switch (index.column())
         {
+            //если нужна первая колонка
         case 0:
-            return QString(files_size[index.row()].first);
+            return QString(files_size[index.row()].first); //возвращаем название сущности
+            //если нужна вторая колонка
         case 1:
-
+            //если сущность не пустая
             if (files_size[index.row()].second > 0)
                 return QLocale(QLocale::English).formattedDataSize(files_size[index.row()].second);
             else
                 return QString("empty");
+            //если нужна третья колонка
         case 2:
+            //процентное соотношение 
             double percent = double(files_size[index.row()].second) / files_size[files_size.size() - 1].second * 100;
             
+            //если сущность не пустая
             if (files_size[index.row()].second > 0)
                 return (percent >= 1 ? QString::number(percent) : "< 1");
             else
