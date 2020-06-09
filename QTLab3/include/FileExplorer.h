@@ -31,6 +31,7 @@ public slots:
     void setGroupingStrategy(qint32 const& index);
     //слот изменени¤ папки
     void folderChanged(const QItemSelection& selected, const QItemSelection& deselected);
+    bool processFileSorting(int state);
 
 private:
 

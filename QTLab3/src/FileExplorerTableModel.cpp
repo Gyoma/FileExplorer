@@ -1,5 +1,6 @@
 #include <include/FileExplorerTableModel.h>
 #include <QLocale>
+#include <algorithm>
 
 FileExplorerTableModel::FileExplorerTableModel(QObject* parent, QVector<QPair<QString, uint64_t>> const& Files_size) :
     QAbstractTableModel(parent),
@@ -12,11 +13,18 @@ void FileExplorerTableModel::setFilesSize(QVector<QPair<QString, uint64_t>> cons
     files_size = Files_size;
 }
 
+void FileExplorerTableModel::sort()
+{
+    if (files_size.size() > 1)
+        std::sort(files_size.begin(), files_size.end() - 1, [](QPair<QString, uint64_t>& l, QPair<QString, uint64_t>& r) {return l.second > r.second; });
+}
+
 int FileExplorerTableModel::rowCount(const QModelIndex&) const
 {
     //Если в папке были файлы, то в конец files_size всегда пишется общий размер папка
     //Если файлов и вложенных папок в выбранной папки не было, тогда в files_size не пишется итоговый размер папки
-    return (files_size.size() > 1 ? files_size.size() - 1 : files_size.size());
+    size_t size = files_size.size();
+    return (size > 1 ? size - 1 : size);
 }
 
 int FileExplorerTableModel::columnCount(const QModelIndex&) const
@@ -66,7 +74,7 @@ QVariant FileExplorerTableModel::data(const QModelIndex& index, int role) const
         case 2:
             //процентное соотношение 
             double percent = double(files_size[index.row()].second) / files_size[files_size.size() - 1].second * 100;
-            
+
             //если сущность не пустая
             if (files_size[index.row()].second > 0)
                 return (percent >= 1 ? QString::number(percent) : "< 1");

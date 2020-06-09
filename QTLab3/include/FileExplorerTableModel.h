@@ -16,6 +16,7 @@ public:
 
     //обновление данных, которые хранятся в модели
     void setFilesSize(QVector<QPair<QString, uint64_t>> const& Files_size);
+    void sort();
 
     //сколько строк нужно в таблице
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
