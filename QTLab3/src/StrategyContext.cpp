@@ -10,10 +10,10 @@ void StrategyContext::setStrategy(FilePercentageStrategy* Strategy)
     strategy = Strategy;
 }
 
-QVector<QPair<QString, uint64_t>> StrategyContext::DoAndPrint(QString const& path)
+QVector<QPair<QString, uint64_t>> StrategyContext::Do(QString const& path)
 {
     if (strategy)
-        return strategy->DoAndPrint(path);
+        return strategy->Do(path);
 
     return QVector<QPair<QString, uint64_t>>();
 }

@@ -13,7 +13,7 @@ static QTextStream qcout(stdout);
     getTotalSize - метод получения размера сущности (файла, папки) в байтах.
     параметры: path - путь до сущности, filters - фильтры сущностей, которые учитывается при подсчете размера.
 
-    DoAndPrint - чистый виртуальный метод. Через этот метод выполняется алгоритм соответсвующей стратегии,
+    Do - чистый виртуальный метод. Через этот метод выполняется алгоритм соответсвующей стратегии,
     результат выписывается в поток вывода - qcout.
     параметры: path - путь до сущности, которая будет обрабатываться в соответсвии с алгоритмом.
 */
@@ -28,6 +28,6 @@ public:
 
     uint64_t getTotalSize(QString const& path, QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden) const;
 
-    virtual QVector<QPair<QString, uint64_t>> DoAndPrint(QString const& path) = 0;
+    virtual QVector<QPair<QString, uint64_t>> Do(QString const& path) = 0;
 };
 

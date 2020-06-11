@@ -19,6 +19,11 @@ void FileExplorerTableModel::sort()
         std::sort(files_size.begin(), files_size.end() - 1, [](QPair<QString, uint64_t>& l, QPair<QString, uint64_t>& r) {return l.second > r.second; });
 }
 
+QVector<QPair<QString, uint64_t>>const& FileExplorerTableModel::getData()
+{
+    return files_size;
+}
+
 int FileExplorerTableModel::rowCount(const QModelIndex&) const
 {
     //Если в папке были файлы, то в конец files_size всегда пишется общий размер папка

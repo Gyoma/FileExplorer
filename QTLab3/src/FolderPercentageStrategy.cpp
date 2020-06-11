@@ -9,7 +9,7 @@ FolderPercentageStrategy::FolderPercentageStrategy()
 FolderPercentageStrategy::~FolderPercentageStrategy()
 {}
 
-QVector<QPair<QString, uint64_t>> FolderPercentageStrategy::DoAndPrint(QString const& path)
+QVector<QPair<QString, uint64_t>> FolderPercentageStrategy::Do(QString const& path)
 {
     //настраиваем фильтр на скрытые файлы и папки
     QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden;
@@ -35,7 +35,7 @@ QVector<QPair<QString, uint64_t>> FolderPercentageStrategy::DoAndPrint(QString c
             for (auto& entity : QDir(path).entryInfoList(filters))
                 if (entity.isDir()) //если папка
                     //получаем размер папки
-                    res.append({ entity.fileName(), getTotalSize(entity.filePath()) });
+                    res.append({ entity.fileName(), getTotalSize(entity.filePath(), filters) });
                 else //есои файл
                     res.append({ entity.fileName(), (uint64_t)entity.size() });
         };

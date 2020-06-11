@@ -13,7 +13,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_PREFIX_PATH "D:\\Qt\\5.14.1\\msvc2017_64")
 
-find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets Charts REQUIRED)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -29,6 +29,7 @@ set(project_headers
 	include/StrategyContext.h
 	include/TypePercentageStrategy.h
 	include/FileExplorerTableModel.h
+	include/QChartWidget.h
 )
 
 set(project_sources 
@@ -39,6 +40,7 @@ set(project_sources
 	src/StrategyContext.cpp
 	src/TypePercentageStrategy.cpp
 	src/FileExplorerTableModel.cpp
+	src/QChartWidget.cpp
 )
 
 qt5_wrap_ui(project_headers_wrapped ${project_ui})
@@ -54,4 +56,5 @@ target_link_libraries(${PROJECT_NAME}
 	Qt5::Core
 	Qt5::Gui
 	Qt5::Widgets
+	Qt5::Charts
 )
