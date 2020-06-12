@@ -6,6 +6,7 @@ QChartWidget::QChartWidget(QWidget* parent, QVector<QPair<QString, uint64_t>> co
     files_size(data)
 {}
 
+//установка данных
 void QChartWidget::setFilesSize(QVector<QPair<QString, uint64_t>> const& Files_size)
 {
     files_size = Files_size;
@@ -17,18 +18,23 @@ void QChartWidget::sort()
         std::sort(files_size.begin(), files_size.end() - 1, [](QPair<QString, uint64_t>& l, QPair<QString, uint64_t>& r) {return l.second > r.second; });
 }
 
+//создание столбчатых гистограмм
 QChart* QChartWidget::createBarChart()
 {
     const auto chart = new QChart;
     const auto series = new QBarSeries;
+    //суммарный процент
     float total_percent = 0.0;
+    //лэйбл для диаграмм
     QString label;
+    //проуент текущего файла
     float percent;
     bool finish = false;
 
     // Проходим по всем данным
     for (size_t i = 0; !finish && i < files_size.size() - 1; ++i)
     {
+        //если суммарный процент меньше 95
         if (total_percent <= 95.0)
         {
             percent = float(files_size[i].second) / files_size[files_size.size() - 1].second * 100;
@@ -65,14 +71,18 @@ QChart* QChartWidget::createPieChart()
 {
     const auto chart = new QChart;
     const auto series = new QPieSeries;
+    //суммарный процент
     float total_percent = 0.0;
+    //лэйбл для диаграмм
     QString label;
+    //проуент текущего файла
     float percent;
     bool finish = false;
 
     // Проходим по всем данным
     for (size_t i = 0; !finish && i < files_size.size() - 1; ++i)
     {
+        //если суммарный процент меньше 95
         if (total_percent <= 95.0)
         {
             percent = float(files_size[i].second) / files_size[files_size.size() - 1].second * 100;
@@ -107,14 +117,18 @@ QChart* QChartWidget::createStackedBarChart()
 {
     const auto chart = new QChart;
     const auto series = new QStackedBarSeries;
+    //суммарный процент
     float total_percent = 0.0;
+    //лэйбл для диаграмм
     QString label;
+    //проуент текущего файла
     float percent;
     bool finish = false;
 
     // Проходим по всем данным
     for (size_t i = 0; !finish && i < files_size.size() - 1; ++i)
     {
+        //если суммарный процент меньше 95
         if (total_percent <= 95.0)
         {
             percent = float(files_size[i].second) / files_size[files_size.size() - 1].second * 100;

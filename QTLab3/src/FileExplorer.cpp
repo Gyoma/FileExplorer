@@ -21,7 +21,7 @@ FileExplorer::FileExplorer(QWidget* parent, FileExplorer::StrategyType strat_typ
     ui->tableView->setModel(table_model);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->splitter->setSizes(QList<int>{1, 0});
-    ui->chartView->setStyleSheet("border: 1px solid #8f8f91");
+    ui->chartView->setStyleSheet("border: 1px solid gray");
     ui->sortBox->setCheckState(Qt::CheckState::Checked);
 
     //устанавливаем соответсвующую стратегию
@@ -49,6 +49,7 @@ void FileExplorer::folderChanged(const QItemSelection& selected, const QItemSele
 
     chart->setFilesSize(table_model->getData());
     processChart(ui->Chart_cbox->currentIndex());
+    //обновляем layout
     emit table_model->layoutChanged();
 }
 
@@ -66,6 +67,7 @@ bool FileExplorer::processFileSorting(int state)
     return false;
 }
 
+//создаем нужную диаграмму в зависимости от выбранной позиции в Chart_cbox
 void FileExplorer::processChart(qint32 const& index)
 {
     switch (index)
@@ -106,5 +108,6 @@ void FileExplorer::setGroupingStrategy(qint32 const& index)
 
     chart->setFilesSize(table_model->getData());
     processChart(ui->Chart_cbox->currentIndex());
+    //обновляем layout
     emit table_model->layoutChanged();
 }
