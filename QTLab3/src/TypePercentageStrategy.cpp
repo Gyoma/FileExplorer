@@ -10,7 +10,7 @@ TypePercentageStrategy::TypePercentageStrategy()
 TypePercentageStrategy::~TypePercentageStrategy()
 {}
 
-QVector<QPair<QString, uint64_t>> TypePercentageStrategy::DoAndPrint(QString const& path)
+QVector<QPair<QString, uint64_t>> TypePercentageStrategy::Do(QString const& path)
 {
     //Хэш-таблица типов файлов, значением выступаем общий размер файлов с таким типов в папке
     QHash<QString, uint64_t> types_list;

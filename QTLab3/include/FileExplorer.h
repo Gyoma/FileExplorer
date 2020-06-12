@@ -3,6 +3,7 @@
 #include <QFileSystemModel>
 #include <include/StrategyContext.h>
 #include <include/FileExplorerTableModel.h>
+#include <include/QChartWidget.h>
 
 //forward declaration класса UI, который будет скомпилирован компил¤тором qt
 namespace Ui
@@ -31,6 +32,8 @@ public slots:
     void setGroupingStrategy(qint32 const& index);
     //слот изменени¤ папки
     void folderChanged(const QItemSelection& selected, const QItemSelection& deselected);
+    bool processFileSorting(int state);
+    void processChart(qint32 const& index);
 
 private:
 
@@ -38,6 +41,7 @@ private:
     //контекст стратегий
     StrategyContext strat_context;
     FileExplorerTableModel* table_model;
+    QChartWidget* chart;
     //тукущий путь до выбранной папки
     QString current_path;
     Ui::FileExplorer* ui;
